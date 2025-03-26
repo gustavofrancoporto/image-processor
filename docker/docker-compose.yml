@@ -1,0 +1,48 @@
+name: image_processor
+
+services:
+  image-processor-rest-api:
+    build: ./rest-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/image_processor
+      - DATABASE_USERNAME=admin
+      - DATABASE_PASSWORD=123456
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=admin
+      - RABBITMQ_PASSWORD=123456
+  image-processor-engine:
+    build: ./engine
+    ports:
+      - "8081:8080"
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/image_processor
+      - DATABASE_USERNAME=admin
+      - DATABASE_PASSWORD=123456
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=admin
+      - RABBITMQ_PASSWORD=123456
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=image_processor
+  rabbitmq:
+    image: rabbitmq:management
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    ports:
+      - "5672:5672"
+      - "15672:15672"
