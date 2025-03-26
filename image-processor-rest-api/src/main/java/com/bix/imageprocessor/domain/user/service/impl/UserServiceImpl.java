@@ -3,8 +3,8 @@ package com.bix.imageprocessor.domain.user.service.impl;
 import com.bix.imageprocessor.domain.user.model.Role;
 import com.bix.imageprocessor.domain.user.model.User;
 import com.bix.imageprocessor.domain.user.service.UserService;
-import com.bix.imageprocessor.persistence.RoleRepository;
-import com.bix.imageprocessor.persistence.UserRepository;
+import com.bix.imageprocessor.persistence.repository.RoleRepository;
+import com.bix.imageprocessor.persistence.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> authenticate(String username, String password) {
-        return userRepository.findByEmail(username)
+    public Optional<User> authenticate(String email, String password) {
+        return userRepository.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()));
     }
 }

@@ -2,8 +2,8 @@ package com.bix.imageprocessor.web.controller;
 
 import com.bix.imageprocessor.domain.user.service.UserService;
 import com.bix.imageprocessor.security.service.JwtTokenService;
-import com.bix.imageprocessor.web.dto.auth.AuthRequest;
-import com.bix.imageprocessor.web.dto.auth.AuthResponse;
+import com.bix.imageprocessor.web.dto.auth.AuthRequestDto;
+import com.bix.imageprocessor.web.dto.auth.AuthResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,13 +19,13 @@ public class AuthenticationController {
     private final JwtTokenService jwtTokenService;
 
     @PostMapping("/auth")
-    public AuthResponse authenticate(@RequestBody @Valid AuthRequest loginRequest) {
+    public AuthResponseDto authenticate(@RequestBody @Valid AuthRequestDto loginRequest) {
 
-        var user = userService.authenticate(loginRequest.username(), loginRequest.password())
+        var user = userService.authenticate(loginRequest.email(), loginRequest.password())
                 .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
 
         var token = jwtTokenService.createToken(user);
 
-        return new AuthResponse(token.getTokenValue());
+        return new AuthResponseDto(token.getTokenValue());
     }
 }

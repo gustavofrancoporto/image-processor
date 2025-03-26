@@ -1,7 +1,7 @@
 package com.bix.imageprocessor.web.controller;
 
 import com.bix.imageprocessor.domain.user.service.UserService;
-import com.bix.imageprocessor.web.dto.user.CreateUser;
+import com.bix.imageprocessor.web.dto.user.CreateUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CreateUser user) {
+    public ResponseEntity<Void> create(@RequestBody CreateUserDto user) {
         userService.create(user.email(), user.password());
         return ResponseEntity.ok().build();
     }
