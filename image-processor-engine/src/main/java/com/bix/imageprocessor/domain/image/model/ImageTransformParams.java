@@ -1,8 +1,8 @@
-package com.bix.imageprocessor.web.dto.image;
+package com.bix.imageprocessor.domain.image.model;
 
 import java.util.List;
 
-public record ImageTransformParamsDto(
+public record ImageTransformParams(
         Float resizeRatio,
         List<String> filters
 ) {

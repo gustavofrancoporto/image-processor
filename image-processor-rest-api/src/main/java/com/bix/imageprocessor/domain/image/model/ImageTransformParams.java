@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -21,8 +20,8 @@ public class ImageTransformParams {
     private Long id;
 
     @Column
-    BigDecimal resizePercentage;
+    private Float resizeRatio;
 
     @Convert(converter = StringListConverter.class)
-    List<String> filters;
+    private List<String> filters;
 }
