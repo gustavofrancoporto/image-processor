@@ -1,7 +1,7 @@
 jwt:
   keys:
-    public: classpath:development/security/app.pub
-    private: classpath:development/security/app.key
+    public: file:${JWT_KEY_FOLDER}/app.pub
+    private: file:${JWT_KEY_FOLDER}/app.key
 
 spring:
   datasource:
