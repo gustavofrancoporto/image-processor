@@ -2,9 +2,21 @@ package com.bix.imageprocessor.domain.imagetransformers;
 
 import com.bix.imageprocessor.domain.image.model.ImageTransformParams;
 
-public interface ImageTransformer {
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
-    byte[] transform(byte[] image, ImageTransformParams params);
+public interface ImageTransformer<T extends ImageTransformParams> {
 
-    boolean apply(ImageTransformParams params);
+    byte[] transform(byte[] image, T params) throws IOException;
+
+    boolean apply(T params);
+
+    default byte[] toByteArray(BufferedImage image) throws IOException {
+        try (var outputStream = new ByteArrayOutputStream()) {
+            ImageIO.write(image, "jpg", outputStream);
+            return outputStream.toByteArray();
+        }
+    }
 }

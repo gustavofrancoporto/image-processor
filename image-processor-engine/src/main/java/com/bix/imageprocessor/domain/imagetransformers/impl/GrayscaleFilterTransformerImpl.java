@@ -1,36 +1,26 @@
 package com.bix.imageprocessor.domain.imagetransformers.impl;
 
-import com.bix.imageprocessor.domain.image.model.ImageTransformParams;
-import com.bix.imageprocessor.domain.imagetransformers.ImageTransformer;
-import lombok.SneakyThrows;
-import org.imgscalr.Scalr;
+import com.bix.imageprocessor.domain.image.model.GrayscaleImageTransformParams;
+import com.bix.imageprocessor.domain.imagetransformers.MarvinImageTransformer;
+import lombok.extern.slf4j.Slf4j;
+import marvin.image.MarvinImage;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import static marvinplugins.MarvinPluginCollection.grayScale;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
-import static org.imgscalr.Scalr.OP_GRAYSCALE;
-
+@Slf4j
 @Component
-public class GrayscaleFilterTransformerImpl implements ImageTransformer {
+public class GrayscaleFilterTransformerImpl extends MarvinImageTransformer<GrayscaleImageTransformParams> {
 
     @Override
-    @SneakyThrows
-    public byte[] transform(byte[] image, ImageTransformParams params) {
-
-        var sourceBufferedImage = ImageIO.read(new ByteArrayInputStream(image));
-
-        var finalBufferedImage = Scalr.apply(sourceBufferedImage, OP_GRAYSCALE);
-
-        try (var outputStream = new ByteArrayOutputStream()) {
-            ImageIO.write(finalBufferedImage, "jpg", outputStream);
-            return outputStream.toByteArray();
-        }
+    protected void transform(MarvinImage marvinImage, GrayscaleImageTransformParams params) {
+        log.info("Applying grayscale filter");
+        grayScale(marvinImage);
     }
 
     @Override
-    public boolean apply(ImageTransformParams params) {
-        return params.filters() != null && params.filters().contains("GRAYSCALE");
+    public boolean apply(GrayscaleImageTransformParams params) {
+        return isTrue(params.grayscale());
     }
 }

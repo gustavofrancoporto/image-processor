@@ -1,9 +1,14 @@
 package com.bix.imageprocessor.domain.image.model;
 
-import java.util.List;
+import java.math.BigDecimal;
+//
+//public record ImageTransformParams(
+//        BigDecimal resizeRatio,
+//        Integer sepiaIntensity,
+//        Boolean grayscale,
+//        Boolean invertColors
+//) {
+//}
 
-public record ImageTransformParams(
-        Float resizeRatio,
-        List<String> filters
-) {
+public interface ImageTransformParams {
 }

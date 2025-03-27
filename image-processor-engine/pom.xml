@@ -17,6 +17,8 @@
 
     <properties>
         <java.version>21</java.version>
+        <marvin.version>1.5.5</marvin.version>
+        <common-lang.version>3.17.0</common-lang.version>
     </properties>
 
     <dependencies>
@@ -38,9 +40,19 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.imgscalr</groupId>
-            <artifactId>imgscalr-lib</artifactId>
-            <version>4.2</version>
+            <groupId>com.github.downgoon</groupId>
+            <artifactId>marvin</artifactId>
+            <version>${marvin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.downgoon</groupId>
+            <artifactId>MarvinPlugins</artifactId>
+            <version>${marvin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${common-lang.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

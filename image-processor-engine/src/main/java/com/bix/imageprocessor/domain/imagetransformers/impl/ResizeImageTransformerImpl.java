@@ -1,36 +1,29 @@
 package com.bix.imageprocessor.domain.imagetransformers.impl;
 
-import com.bix.imageprocessor.domain.image.model.ImageTransformParams;
-import com.bix.imageprocessor.domain.imagetransformers.ImageTransformer;
-import lombok.SneakyThrows;
-import org.imgscalr.Scalr;
+import com.bix.imageprocessor.domain.image.model.ResizeImageTransformParams;
+import com.bix.imageprocessor.domain.imagetransformers.MarvinImageTransformer;
+import lombok.extern.slf4j.Slf4j;
+import marvin.image.MarvinImage;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import static java.math.BigDecimal.ZERO;
+import static marvinplugins.MarvinPluginCollection.scale;
 
+@Slf4j
 @Component
-public class ResizeImageTransformerImpl implements ImageTransformer {
+public class ResizeImageTransformerImpl extends MarvinImageTransformer<ResizeImageTransformParams> {
 
     @Override
-    @SneakyThrows
-    public byte[] transform(byte[] image, ImageTransformParams params) {
+    protected void transform(MarvinImage marvinImage, ResizeImageTransformParams params) {
 
-        var sourceBufferedImage = ImageIO.read(new ByteArrayInputStream(image));
+        log.info("Applying resize filter with resize ratio of {}", params.resizeRatio());
 
-        var targetWidth = (int) (sourceBufferedImage.getWidth() * params.resizeRatio());
-
-        var finalBufferedImage = Scalr.resize(sourceBufferedImage, targetWidth);
-
-        try (var outputStream = new ByteArrayOutputStream()) {
-            ImageIO.write(finalBufferedImage, "jpg", outputStream);
-            return outputStream.toByteArray();
-        }
+        var targetWidth = (int) (marvinImage.getWidth() * params.resizeRatio().doubleValue());
+        scale(marvinImage.clone(), marvinImage, targetWidth);
     }
 
     @Override
-    public boolean apply(ImageTransformParams params) {
-        return params.resizeRatio() != null && params.resizeRatio() > 0;
+    public boolean apply(ResizeImageTransformParams params) {
+        return params.resizeRatio() != null && params.resizeRatio().compareTo(ZERO) > 0;
     }
 }

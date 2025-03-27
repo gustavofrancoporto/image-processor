@@ -1,6 +1,7 @@
 package com.bix.imageprocessor.config;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,12 +18,6 @@ public class RabbitMqConfig {
 
     @Bean
     Queue queue() {
-        return new Queue(IMAGE_PROCESSOR_QUEUE_NAME, false);
-    }
-
-    @Bean
-    Binding binding(TopicExchange exchange) {
-        var queue = queue();
-        return BindingBuilder.bind(queue).to(exchange).with(queue.getName());
+        return new Queue(IMAGE_PROCESSOR_QUEUE_NAME);
     }
 }

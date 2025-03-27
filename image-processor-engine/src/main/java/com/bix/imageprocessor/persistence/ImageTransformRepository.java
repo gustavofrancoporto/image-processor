@@ -5,5 +5,7 @@ import com.bix.imageprocessor.domain.image.model.ImageTransform;
 public interface ImageTransformRepository {
     ImageTransform findById(Long id);
 
-    void updateProcessedImage(Long id, byte[] finalImage);
+    void markTransformationSuccess(Long id, byte[] transformedImage);
+
+    void markTransformationFailed(Long id);
 }
