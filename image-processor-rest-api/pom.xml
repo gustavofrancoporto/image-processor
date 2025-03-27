@@ -19,7 +19,7 @@
         <java.version>21</java.version>
         <map-struct.version>1.5.5.Final</map-struct.version>
         <map-struct-spring-extension.version>1.1.2</map-struct-spring-extension.version>
-        <common-lang.version>3.17.0</common-lang.version>
+        <commons-collections.version>4.4</commons-collections.version>
     </properties>
 
     <dependencies>
@@ -55,7 +55,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${common-lang.version}</version>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

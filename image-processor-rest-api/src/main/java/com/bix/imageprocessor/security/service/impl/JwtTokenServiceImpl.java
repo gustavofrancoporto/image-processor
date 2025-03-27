@@ -1,6 +1,5 @@
 package com.bix.imageprocessor.security.service.impl;
 
-import com.bix.imageprocessor.domain.user.model.Role;
 import com.bix.imageprocessor.domain.user.model.User;
 import com.bix.imageprocessor.persistence.repository.UserRepository;
 import com.bix.imageprocessor.security.service.JwtTokenService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.util.stream.Collectors.joining;
 
 @Service
 @RequiredArgsConstructor
@@ -27,17 +25,15 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     public Jwt createToken(User user) {
         var now = Instant.now();
 
-        var scopes = user.getRoles()
-                .stream()
-                .map(Role::getName)
-                .collect(joining(" "));
-
         var claims = JwtClaimsSet.builder()
                 .issuer("image-processor-rest-api")
                 .subject(user.getId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plus(15, MINUTES))
-                .claim("scope", scopes)
+                .claim("roles", user.getRoleNames())
+                .claim("email", user.getEmail())
+                .claim("name", user.getName())
+                .claim("subscriptionType", user.getSubscription().getType())
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims));

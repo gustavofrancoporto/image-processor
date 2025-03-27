@@ -2,6 +2,7 @@ package com.bix.imageprocessor.web.exception.service;
 
 
 import com.bix.imageprocessor.web.exception.model.ApiError;
+import com.bix.imageprocessor.web.exception.model.RequestLimitReachedException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -63,5 +64,11 @@ public class RestExceptionHandler {
     protected ResponseEntity<ApiError> handleAccessDenied(AccessDeniedException ex) {
         var apiError = new ApiError("Access denied", ex);
         return new ResponseEntity<>(apiError, FORBIDDEN);
+    }
+
+    @ExceptionHandler(RequestLimitReachedException.class)
+    protected ResponseEntity<ApiError> handleAccessDenied(RequestLimitReachedException ex) {
+        var apiError = new ApiError(ex.getMessage(), ex);
+        return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 }
