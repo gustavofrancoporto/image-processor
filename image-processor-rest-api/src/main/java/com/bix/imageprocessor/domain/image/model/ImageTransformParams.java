@@ -1,18 +1,17 @@
 package com.bix.imageprocessor.domain.image.model;
 
-import com.bix.imageprocessor.persistence.converter.StringListConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Setter
 @Getter
 @Entity
-@Table(name = "image_transform_params")
+@Table(name = "image_transformation_params")
 public class ImageTransformParams {
 
     @Id
@@ -20,8 +19,14 @@ public class ImageTransformParams {
     private Long id;
 
     @Column
-    private Float resizeRatio;
+    private BigDecimal resizeRatio;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> filters;
+    @Column
+    private Integer sepiaIntensity;
+
+    @Column
+    private Boolean grayscale;
+
+    @Column
+    private Boolean invertColors;
 }

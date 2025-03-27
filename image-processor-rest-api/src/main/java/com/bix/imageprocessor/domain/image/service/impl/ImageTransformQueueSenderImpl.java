@@ -18,5 +18,4 @@ public class ImageTransformQueueSenderImpl implements ImageTransformQueueSender 
     public void send(Long imageTransformId) {
         rabbitTemplate.convertAndSend(queue.getName(), imageTransformId);
     }
-
 }

@@ -21,24 +21,12 @@ public class RabbitMqConfig {
 
     @Bean
     Queue imageResizingQueue() {
-        return new Queue(IMAGE_PROCESSOR_QUEUE_NAME, false);
+        return new Queue(IMAGE_PROCESSOR_QUEUE_NAME);
     }
-
-    @Bean
-    Binding imageResizingBinding(TopicExchange exchange) {
-        var queue = imageResizingQueue();
-        return BindingBuilder.bind(queue).to(exchange).with(queue.getName());
-    }
-
-    @Bean
-    MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    AmqpTemplate template(ConnectionFactory connectionFactory) {
-        var template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(messageConverter());
-        return template;
-    }
+//
+//    @Bean
+//    Binding imageResizingBinding(TopicExchange exchange) {
+//        var queue = imageResizingQueue();
+//        return BindingBuilder.bind(queue).to(exchange).with(queue.getName());
+//    }
 }

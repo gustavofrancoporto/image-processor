@@ -26,5 +26,5 @@ public class Image {
     private String contentType;
 
     @Column(nullable = false)
-    private byte[] originalData;
+    private byte[] data;
 }

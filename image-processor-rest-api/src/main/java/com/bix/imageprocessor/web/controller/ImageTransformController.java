@@ -7,6 +7,7 @@ import com.bix.imageprocessor.web.dto.image.ImageTransformParamsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -25,13 +26,12 @@ public class ImageTransformController {
 
     @PostMapping
     public void processImage(
-            @RequestPart("transformParams") ImageTransformParamsDto processingParams,
-            @RequestPart("description") String description,
+            @RequestPart("transformParams")@Validated ImageTransformParamsDto processingParams,
             @RequestPart("image") MultipartFile imageMultipartFile,
             @AuthenticationPrincipal Jwt jwt) throws IOException {
 
         var user = jwtTokenService.getUser(jwt);
-        var image = new ImageDto(imageMultipartFile, description);
+        var image = new ImageDto(imageMultipartFile);
 
         imageTransformService.startProcess(image, processingParams, user);
 

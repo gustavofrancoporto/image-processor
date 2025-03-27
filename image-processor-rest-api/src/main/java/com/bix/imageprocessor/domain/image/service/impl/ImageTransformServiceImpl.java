@@ -17,7 +17,7 @@ import static com.bix.imageprocessor.domain.image.model.ImageTransformStatus.PEN
 @RequiredArgsConstructor
 public class ImageTransformServiceImpl implements ImageTransformService {
 
-    private final ImageTransformRepository imageTransformIdRepository;
+    private final ImageTransformRepository imageTransformRepository;
 
     @Override
     public ImageTransform createImageTransform(Image image, ImageTransformParams transformationParams, User user) {
@@ -29,6 +29,6 @@ public class ImageTransformServiceImpl implements ImageTransformService {
         imageTransformId.setRequestedAt(Instant.now());
         imageTransformId.setStatus(PENDING);
 
-        return imageTransformIdRepository.save(imageTransformId);
+        return imageTransformRepository.save(imageTransformId);
     }
 }

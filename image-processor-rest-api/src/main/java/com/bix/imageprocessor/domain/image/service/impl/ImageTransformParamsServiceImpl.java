@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ImageTransformParamsServiceImpl implements ImageTransformParamsService {
 
-    private final ImageTransformParamsMapper imageTransformIdParamsMapper;
-    private final ImageTransformParamsRepository imageTransformIdParamsRepository;
+    private final ImageTransformParamsMapper imageTransformParamsMapper;
+    private final ImageTransformParamsRepository imageTransformParamsRepository;
 
     @Override
     public ImageTransformParams save(ImageTransformParamsDto imageTransformIdParamsDto) {
 
-        var imageTransformIdParams = imageTransformIdParamsMapper.convert(imageTransformIdParamsDto);
-        return imageTransformIdParamsRepository.save(imageTransformIdParams);
+        var imageTransformIdParams = imageTransformParamsMapper.convert(imageTransformIdParamsDto);
+        return imageTransformParamsRepository.save(imageTransformIdParams);
     }
 }

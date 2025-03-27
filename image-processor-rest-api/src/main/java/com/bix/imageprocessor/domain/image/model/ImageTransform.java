@@ -13,21 +13,22 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @Getter
 @Entity
-@Table(name = "image_transforms")
+@Table(name = "image_transformations")
 public class ImageTransform {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(STRING)
     private ImageTransformStatus status;
 
     @Column
-    private byte[] processedData;
+    private byte[] transformedData;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Image image;
 
     @ManyToOne
@@ -40,4 +41,7 @@ public class ImageTransform {
 
     @Column(nullable = false)
     private Instant requestedAt;
+
+    @Column
+    private Instant completedAt;
 }
