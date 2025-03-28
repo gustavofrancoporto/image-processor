@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-<!--    <changeSet author="Gustavo Porto" id="create-admin-role">
+    <changeSet author="Gustavo Porto" id="create-admin-role">
         <insert tableName="roles">
             <column name="id">1</column>
             <column name="name">ADMIN</column>
@@ -22,5 +22,5 @@
             <column name="roles_id">1</column>
             <column name="user_id">1</column>
         </insert>
-    </changeSet>-->
+    </changeSet>
 </databaseChangeLog>

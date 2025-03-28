@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <!--<changeSet author="Gustavo Porto" id="create-subscriptions">
+    <changeSet author="Gustavo Porto" id="create-subscriptions">
         <insert tableName="subscriptions">
             <column name="type">BASIC</column>
             <column name="max_transformations_per_day">5</column>
@@ -11,5 +11,5 @@
         <insert tableName="subscriptions">
             <column name="type">PREMIUM</column>
         </insert>
-    </changeSet>-->
+    </changeSet>
 </databaseChangeLog>
