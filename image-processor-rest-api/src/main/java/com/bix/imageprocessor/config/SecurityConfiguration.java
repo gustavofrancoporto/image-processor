@@ -42,7 +42,8 @@ public class SecurityConfiguration {
 
         return http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(POST, "/auth").permitAll()
+                        .requestMatchers(POST, "/api/*/login").permitAll()
+                        .requestMatchers("/api/*/admin/*").hasAuthority("SCOPE_ADMIN")
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))

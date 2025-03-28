@@ -5,16 +5,15 @@
 
     <changeSet author="Gustavo Porto" id="create-admin-role">
         <insert tableName="roles">
-            <column name="id">1</column>
             <column name="name">ADMIN</column>
         </insert>
     </changeSet>
     <changeSet author="Gustavo Porto" id="create-admin-user">
         <insert tableName="users">
-            <column name="id">1</column>
             <column name="email">admin@admin.com</column>
             <column name="name">Administrator</column>
             <column name="password">$2a$12$0jV.sJIKKi/pRav62uRcV.Sd7eSzXrGKRYQQE8CS6/exV1FsbGM4K</column>
+            <column name="subscription_id">2</column>
         </insert>
     </changeSet>
     <changeSet id="map-admin-role-to-user" author="Gustavo Porto">

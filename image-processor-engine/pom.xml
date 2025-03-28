@@ -101,7 +101,7 @@
                         </goals>
                         <configuration>
                             <sourceFile>target/${build.finalName}.jar</sourceFile>
-                            <destinationFile>../docker/engine/${artifactId}.jar</destinationFile>
+                            <destinationFile>../docker/services/engine/${artifactId}.jar</destinationFile>
                         </configuration>
                     </execution>
                 </executions>

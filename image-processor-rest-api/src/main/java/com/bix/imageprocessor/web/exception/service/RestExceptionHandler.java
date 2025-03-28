@@ -3,6 +3,8 @@ package com.bix.imageprocessor.web.exception.service;
 
 import com.bix.imageprocessor.web.exception.model.ApiError;
 import com.bix.imageprocessor.web.exception.model.RequestLimitReachedException;
+import com.bix.imageprocessor.web.exception.model.UserAlreadyExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -70,5 +72,17 @@ public class RestExceptionHandler {
     protected ResponseEntity<ApiError> handleAccessDenied(RequestLimitReachedException ex) {
         var apiError = new ApiError(ex.getMessage(), ex);
         return new ResponseEntity<>(apiError, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    protected ResponseEntity<ApiError> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        var apiError = new ApiError(ex.getMessage(), ex);
+        return new ResponseEntity<>(apiError, CONFLICT);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<ApiError> handleEntityNotFound(EntityNotFoundException ex) {
+        var apiError = new ApiError(ex.getMessage(), ex);
+        return new ResponseEntity<>(apiError, NOT_FOUND);
     }
 }

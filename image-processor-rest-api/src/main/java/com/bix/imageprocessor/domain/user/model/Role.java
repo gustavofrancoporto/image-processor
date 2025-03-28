@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -20,14 +19,4 @@ public class Role {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
-
-    @Getter
-    @RequiredArgsConstructor
-    public enum Values {
-
-        ADMIN(1L),
-        BASIC(2L);
-
-        private final long id;
-    }
 }

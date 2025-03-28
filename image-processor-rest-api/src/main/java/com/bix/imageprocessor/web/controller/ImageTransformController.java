@@ -17,14 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/image-transform")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class ImageTransformController {
 
     private final ImageTransformStarterService imageTransformService;
     private final JwtTokenService jwtTokenService;
 
-    @PostMapping
+    @PostMapping("/image-transform")
     public void processImage(
             @RequestPart("transformParams")@Validated ImageTransformParamsDto processingParams,
             @RequestPart("image") MultipartFile imageMultipartFile,

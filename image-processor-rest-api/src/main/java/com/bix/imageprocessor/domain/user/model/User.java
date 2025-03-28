@@ -2,6 +2,7 @@ package com.bix.imageprocessor.domain.user.model;
 
 import com.bix.imageprocessor.domain.subscription.model.Subscription;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

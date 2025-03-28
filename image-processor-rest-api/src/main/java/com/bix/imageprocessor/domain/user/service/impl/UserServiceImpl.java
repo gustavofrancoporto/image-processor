@@ -1,19 +1,23 @@
 package com.bix.imageprocessor.domain.user.service.impl;
 
-import com.bix.imageprocessor.domain.user.model.Role;
 import com.bix.imageprocessor.domain.user.model.User;
 import com.bix.imageprocessor.domain.user.service.UserService;
-import com.bix.imageprocessor.persistence.repository.RoleRepository;
+import com.bix.imageprocessor.persistence.repository.SubscriptionRepository;
 import com.bix.imageprocessor.persistence.repository.UserRepository;
+import com.bix.imageprocessor.web.dto.user.CreateUserDto;
+import com.bix.imageprocessor.web.dto.user.ViewUserDto;
+import com.bix.imageprocessor.web.exception.model.UserAlreadyExistsException;
+import com.bix.imageprocessor.web.mapper.CreateUserMapper;
+import com.bix.imageprocessor.web.mapper.ViewUserMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.Set;
+
+import static com.bix.imageprocessor.domain.subscription.model.SubscriptionType.BASIC;
+import static com.bix.imageprocessor.domain.subscription.model.SubscriptionType.PREMIUM;
 
 
 @Service
@@ -21,25 +25,34 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final SubscriptionRepository subscriptionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ViewUserMapper viewUserMapper;
+    private final CreateUserMapper createUserMapper;
 
     @Override
     @Transactional
-    public void create(String username, String password) {
-        var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
+    public User create(CreateUserDto userDto) {
 
-        var userFromDb = userRepository.findByEmail(username);
-        if (userFromDb.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+        userRepository.findByEmail(userDto.email()).ifPresent(user -> {
+            throw new UserAlreadyExistsException();
+        });
 
-        var user = new User();
-        user.setEmail(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRoles(Set.of(basicRole));
+        var user = createUserMapper.convert(userDto);
 
-        userRepository.save(user);
+        var subscriptionType = userDto.isPremium() ? PREMIUM : BASIC;
+        var subscription = subscriptionRepository.findByType(subscriptionType);
+
+        user.setSubscription(subscription);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public Optional<ViewUserDto> findById(Long id) {
+        return userRepository.findById(id)
+                .map(viewUserMapper::convert);
     }
 
     @Override

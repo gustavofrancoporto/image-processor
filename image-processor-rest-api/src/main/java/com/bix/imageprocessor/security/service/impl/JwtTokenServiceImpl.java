@@ -30,10 +30,10 @@ public class JwtTokenServiceImpl implements JwtTokenService {
                 .subject(user.getId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plus(15, MINUTES))
-                .claim("roles", user.getRoleNames())
                 .claim("email", user.getEmail())
                 .claim("name", user.getName())
                 .claim("subscriptionType", user.getSubscription().getType())
+                .claim("scope", user.getRoleNames())
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims));

@@ -37,11 +37,12 @@ public class ImageTransformServiceImpl implements ImageTransformService {
                 }
             }
             log.info("Image transform {} processed successfully", id);
-            notificationProducer.notify(id);
             imageTransformRepository.markTransformationSuccess(id, transformedImage);
+            notificationProducer.notify(id);
         } catch (Exception e) {
             log.error("Image transform {} failed", id, e);
             imageTransformRepository.markTransformationFailed(id);
         }
+        notificationProducer.notify(id);
     }
 }
