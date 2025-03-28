@@ -1,6 +1,6 @@
 FROM eclipse-temurin:21
 
-ADD ./image-processor-rest-api.jar image-processor-rest-api.jar
+ADD image-processor-rest-api.jar image-processor-rest-api.jar
 
 RUN mkdir ./jwt-key
 

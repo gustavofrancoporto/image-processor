@@ -1,6 +1,6 @@
 FROM eclipse-temurin:21
 
-ADD ./image-processor-notification.jar image-processor-notification.jar
+ADD image-processor-notification.jar image-processor-notification.jar
 
 ENTRYPOINT ["java","-jar","image-processor-notification.jar"]
 

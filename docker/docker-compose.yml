@@ -2,7 +2,7 @@ name: image_processor
 
 services:
   image-processor-engine:
-    build: ./engine
+    build: services/engine
     ports:
       - "8081:8080"
     depends_on:
@@ -10,16 +10,12 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/image_processor
-      - DATABASE_USERNAME=admin
-      - DATABASE_PASSWORD=123456
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=admin
-      - RABBITMQ_PASSWORD=123456
+    env_file:
+      - envs/database.env
+      - envs/rabbitmq.env
+
   image-processor-notification:
-    build: ./notification
+    build: services/notification
     ports:
       - "8082:8080"
     depends_on:
@@ -27,20 +23,13 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/image_processor
-      - DATABASE_USERNAME=admin
-      - DATABASE_PASSWORD=123456
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=admin
-      - RABBITMQ_PASSWORD=123456
-      - MAIL_HOST=smtp.gmail.com
-      - MAIL_PORT=587
-      - MAIL_USERNAME=bixtest2025@gmail.com
-      - MAIL_PASSWORD=ece@kdr.YHQ*jyv9wam
+    env_file:
+      - envs/database.env
+      - envs/rabbitmq.env
+      - envs/mail.env
+
   image-processor-rest-api:
-    build: ./rest-api
+    build: services/rest-api
     ports:
       - "8080:8080"
     depends_on:
@@ -48,22 +37,16 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/image_processor
-      - DATABASE_USERNAME=admin
-      - DATABASE_PASSWORD=123456
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=admin
-      - RABBITMQ_PASSWORD=123456
+    env_file:
+      - envs/database.env
+      - envs/rabbitmq.env
+
   postgres:
     image: postgres
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=image_processor
+    env_file:
+      - envs/postgres.env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
@@ -72,7 +55,7 @@ services:
   rabbitmq:
     image: rabbitmq:management
     volumes:
-      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./confs/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
     ports:
       - "5672:5672"
       - "15672:15672"
