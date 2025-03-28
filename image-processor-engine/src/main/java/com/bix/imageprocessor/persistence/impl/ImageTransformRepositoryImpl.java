@@ -41,7 +41,6 @@ public class ImageTransformRepositoryImpl implements ImageTransformRepository {
                     image_transformations.id = :id
                 """;
 
-//        var rowMapper = new ImageTransformRowMapperImpl();
         var rowMapper = new DataClassRowMapper<>(ImageTransform.class);
 
         return jdbcTemplate.queryForObject(query, Map.of("id", id), rowMapper);

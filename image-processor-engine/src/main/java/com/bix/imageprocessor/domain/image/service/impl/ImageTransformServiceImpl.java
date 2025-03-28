@@ -3,6 +3,7 @@ package com.bix.imageprocessor.domain.image.service.impl;
 import com.bix.imageprocessor.domain.image.model.ImageTransformParams;
 import com.bix.imageprocessor.domain.image.service.ImageTransformService;
 import com.bix.imageprocessor.domain.imagetransformers.ImageTransformer;
+import com.bix.imageprocessor.domain.notification.messaging.NotificationProducer;
 import com.bix.imageprocessor.persistence.ImageTransformRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ImageTransformServiceImpl implements ImageTransformService {
 
     private final ImageTransformRepository imageTransformRepository;
+    private final NotificationProducer notificationProducer;
     private final List<ImageTransformer<? extends ImageTransformParams>> imageTransformers;
 
     @Override
@@ -35,6 +37,7 @@ public class ImageTransformServiceImpl implements ImageTransformService {
                 }
             }
             log.info("Image transform {} processed successfully", id);
+            notificationProducer.notify(id);
             imageTransformRepository.markTransformationSuccess(id, transformedImage);
         } catch (Exception e) {
             log.error("Image transform {} failed", id, e);

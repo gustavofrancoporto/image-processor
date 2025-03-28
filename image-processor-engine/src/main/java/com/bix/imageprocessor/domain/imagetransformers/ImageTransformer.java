@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public interface ImageTransformer<T extends ImageTransformParams> {
 
-    byte[] transform(byte[] image, T params) throws IOException;
+    byte[] transform(byte[] image, T params);
 
     boolean apply(T params);
 
