@@ -19,9 +19,6 @@ public class Image {
     @Column(nullable = false)
     private String fileName;
 
-    @Column
-    private String description;
-
     @Column(nullable = false)
     private String contentType;
 

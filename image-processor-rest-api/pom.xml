@@ -63,6 +63,10 @@
             <version>${commons-collections.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -123,9 +127,25 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                    <outputDirectory>../docker/rest-api</outputDirectory>
-                    <finalName>${artifactId}</finalName>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.coderplus.maven.plugins</groupId>
+                <artifactId>copy-rename-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-file</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>target/${build.finalName}.jar</sourceFile>
+                            <destinationFile>../docker/rest-api/${artifactId}.jar</destinationFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

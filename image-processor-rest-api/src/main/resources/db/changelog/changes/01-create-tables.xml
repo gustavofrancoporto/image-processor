@@ -1,0 +1,107 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="Gustavo Porto" id="create-images-table">
+        <createTable tableName="images">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="content_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Gustavo Porto" id="create-image-transformation-params-table">
+        <createTable tableName="image_transformation_params">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="grayscale" type="BOOLEAN"/>
+            <column name="invert_colors" type="BOOLEAN"/>
+            <column name="resize_ratio" type="NUMERIC(38, 2)"/>
+            <column name="sepia_intensity" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Gustavo Porto" id="create-subscriptions-table">
+        <createTable tableName="subscriptions">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_transformations_per_day" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Gustavo Porto" id="create-users-table">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="subscription_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="subscriptions" referencedColumnNames="id" foreignKeyName="user_subscription_fk"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Gustavo Porto" id="create-image-transformations-table">
+        <createTable tableName="image_transformations">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transformed_data" type="BYTEA"/>
+            <column name="image_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="images" referencedColumnNames="id" foreignKeyName="image_transformation_image_fk"/>
+            </column>
+            <column name="transformation_params_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="image_transformation_params" referencedColumnNames="id" foreignKeyName="image_transformation_image_transformation_params_fk"/>
+            </column>
+            <column name="requested_by_id" type="BIGINT">
+                <constraints nullable="false" referencedTableName="users" referencedColumnNames="id" foreignKeyName="image_transformation_requested_by_fk"/>
+            </column>
+            <column name="requested_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="completed_at" type="TIMESTAMP WITH TIME ZONE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Gustavo Porto" id="create-roles-table">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Gustavo Porto" id="create-user-roles-table">
+        <createTable tableName="user_roles">
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true" referencedTableName="users" referencedColumnNames="id" foreignKeyName="user_roles_user_fk"/>
+            </column>
+            <column name="roles_id" type="BIGINT">
+                <constraints primaryKey="true" referencedTableName="roles" referencedColumnNames="id" foreignKeyName="user_roles_role_fk"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
