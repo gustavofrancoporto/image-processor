@@ -1,13 +1,15 @@
 name: image_processor
 
 services:
-  image-processor-rest-api:
-    build: ./rest-api
+  image-processor-engine:
+    build: ./engine
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
-      - rabbitmq
-      - postgres
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     environment:
       - DATABASE_URL=jdbc:postgresql://postgres:5432/image_processor
       - DATABASE_USERNAME=admin
@@ -16,13 +18,36 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=admin
       - RABBITMQ_PASSWORD=123456
-  image-processor-engine:
-    build: ./engine
+  image-processor-notification:
+    build: ./notification
     ports:
-      - "8081:8080"
+      - "8082:8080"
     depends_on:
-      - rabbitmq
-      - postgres
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/image_processor
+      - DATABASE_USERNAME=admin
+      - DATABASE_PASSWORD=123456
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=admin
+      - RABBITMQ_PASSWORD=123456
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=bixtest2025@gmail.com
+      - MAIL_PASSWORD=ece@kdr.YHQ*jyv9wam
+  image-processor-rest-api:
+    build: ./rest-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     environment:
       - DATABASE_URL=jdbc:postgresql://postgres:5432/image_processor
       - DATABASE_USERNAME=admin
@@ -39,6 +64,11 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=image_processor
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   rabbitmq:
     image: rabbitmq:management
     volumes:
@@ -46,3 +76,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_port_connectivity" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5

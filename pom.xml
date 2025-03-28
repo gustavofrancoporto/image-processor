@@ -22,7 +22,7 @@
 
     <modules>
         <module>image-processor-engine</module>
+        <module>image-processor-notification</module>
         <module>image-processor-rest-api</module>
     </modules>
-
 </project>
