@@ -15,6 +15,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Table(name = "roles")
 public class Role {
 
+    public static final String ROLE_ADMIN = "ADMIN";
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;

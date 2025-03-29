@@ -24,13 +24,13 @@ public class ApiError {
         timestamp = LocalDateTime.now();
     }
 
-    public ApiError(String message, Throwable ex) {
+    public ApiError(String message) {
         this();
         this.message = defaultIfBlank(message, "Unexpected error");
     }
 
-    public ApiError(String message, Throwable exception, List<ApiValidationError> validationErrors) {
-        this(message, exception);
+    public ApiError(String message, List<ApiValidationError> validationErrors) {
+        this(message);
         this.validationErrors = validationErrors;
     }
 }

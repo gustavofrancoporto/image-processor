@@ -6,7 +6,6 @@ import com.bix.imageprocessor.persistence.repository.ImageRepository;
 import com.bix.imageprocessor.web.dto.image.ImageDto;
 import com.bix.imageprocessor.web.mapper.ImageMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service

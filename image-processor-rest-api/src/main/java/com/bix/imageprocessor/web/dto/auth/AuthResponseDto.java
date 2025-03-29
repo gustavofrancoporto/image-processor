@@ -1,4 +1,10 @@
 package com.bix.imageprocessor.web.dto.auth;
 
-public record AuthResponseDto(String accessToken) {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(name = "Authentication Response")
+public record AuthResponseDto(
+        @Schema(description = "Bearer token")
+        String accessToken
+) {
 }
