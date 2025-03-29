@@ -23,6 +23,8 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+    environment:
+      - IMAGE_DOWNLOAD_BASE_URL=http://localhost:8080/
     env_file:
       - envs/rabbitmq.env
       - envs/mail.env
