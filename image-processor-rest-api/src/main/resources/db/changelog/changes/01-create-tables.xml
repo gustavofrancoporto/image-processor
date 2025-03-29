@@ -72,6 +72,9 @@
             <column name="image_id" type="BIGINT">
                 <constraints nullable="false" referencedTableName="images" referencedColumnNames="id" foreignKeyName="image_transformation_image_fk"/>
             </column>
+            <column name="download_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="transformation_params_id" type="BIGINT">
                 <constraints nullable="false" referencedTableName="image_transformation_params" referencedColumnNames="id" foreignKeyName="image_transformation_image_transformation_params_fk"/>
             </column>

@@ -2,8 +2,7 @@ package com.bix.imageprocessor.domain.image.model;
 
 import com.bix.imageprocessor.domain.user.model.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -12,6 +11,9 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Setter
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "image_transformations")
 public class ImageTransform {
@@ -26,6 +28,9 @@ public class ImageTransform {
 
     @Column
     private byte[] transformedData;
+
+    @Column(nullable = false)
+    private String downloadCode;
 
     @ManyToOne
     @JoinColumn(nullable = false)
