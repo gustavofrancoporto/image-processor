@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "app.image-download-base-url",
+      "type": "java.lang.String",
+      "description": "Base URL used to construct the download link included in successful image transformation notifications. This URL is combined with resource identifiers to create the complete path where transformed images can be accessed."
+    }
+  ]
+}

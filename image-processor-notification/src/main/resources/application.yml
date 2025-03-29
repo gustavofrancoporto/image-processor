@@ -1,3 +1,5 @@
+app:
+  image-download-base-url: ${IMAGE_DOWNLOAD_BASE_URL}
 spring:
   jpa:
     hibernate:

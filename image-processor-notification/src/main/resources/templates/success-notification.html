@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Processing Success</title>
+    <style>
+        h1 {
+            color: #2e7d32;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white !important;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>Image Processing Successful!</h1>
+<p>Great news! Your image <strong th:text="${imageFileName}">image.jpg</strong> has been successfully processed.</p>
+<p>
+    <a th:href="${downloadUrl}" class="button">Download Processed Image</a>
+</p>
+</body>
+</html>
