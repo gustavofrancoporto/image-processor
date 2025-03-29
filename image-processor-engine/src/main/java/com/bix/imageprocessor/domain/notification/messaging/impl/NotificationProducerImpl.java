@@ -1,6 +1,8 @@
 package com.bix.imageprocessor.domain.notification.messaging.impl;
 
+import com.bix.imageprocessor.domain.image.model.ImageTransform;
 import com.bix.imageprocessor.domain.notification.messaging.NotificationProducer;
+import com.bix.imageprocessor.domain.notification.model.NotificationMessage;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +22,15 @@ public class NotificationProducerImpl implements NotificationProducer {
     }
 
     @Override
-    public void notify(Long imageTransformId) {
-        rabbitTemplate.convertAndSend(queue.getName(), imageTransformId);
+    public void notify(ImageTransform imageTransform, boolean success) {
+
+        var notificationMessage = NotificationMessage.builder()
+                .imageTransformationId(imageTransform.id())
+                .imageFileName(imageTransform.imageFileName())
+                .email(imageTransform.requestorEmail())
+                .success(success)
+                .build();
+
+        rabbitTemplate.convertAndSend(queue.getName(), notificationMessage);
     }
 }

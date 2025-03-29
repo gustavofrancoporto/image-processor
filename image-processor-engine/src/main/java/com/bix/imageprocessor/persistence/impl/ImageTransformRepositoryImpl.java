@@ -30,6 +30,8 @@ public class ImageTransformRepositoryImpl implements ImageTransformRepository {
                 select
                     image_transformations.id,
                     images.data as image,
+                    images.file_name as image_file_name,
+                    users.email as requestor_email,
                     image_transformation_params.resize_ratio,
                     image_transformation_params.grayscale,
                     image_transformation_params.invert_colors,
@@ -37,6 +39,7 @@ public class ImageTransformRepositoryImpl implements ImageTransformRepository {
                 from image_transformations
                     left join image_transformation_params on image_transformation_params.id = image_transformations.transformation_params_id
                     left join images on images.id = image_transformations.image_id
+                    left join users on image_transformations.requested_by_id = users.id
                 where
                     image_transformations.id = :id
                 """;
