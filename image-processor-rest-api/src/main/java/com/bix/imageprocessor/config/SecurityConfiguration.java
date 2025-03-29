@@ -23,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -43,6 +44,7 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(POST, "/api/*/login").permitAll()
+                        .requestMatchers(GET, "/api/*/images/*").permitAll()
                         .requestMatchers("/v3/api-docs", "/v3/api-docs/*").permitAll()
                         .requestMatchers("/swagger-ui/*").permitAll()
                         .requestMatchers("/api/*/admin/*").hasAuthority("SCOPE_ADMIN")
