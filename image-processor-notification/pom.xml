@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+            <artifactId>spring-boot-starter-json</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -83,7 +83,7 @@
                         </goals>
                         <configuration>
                             <sourceFile>target/${build.finalName}.jar</sourceFile>
-                            <destinationFile>../docker/notification/${artifactId}.jar</destinationFile>
+                            <destinationFile>../docker/services/notification/${artifactId}.jar</destinationFile>
                         </configuration>
                     </execution>
                 </executions>
