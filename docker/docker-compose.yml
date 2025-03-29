@@ -24,7 +24,6 @@ services:
       postgres:
         condition: service_healthy
     env_file:
-      - envs/database.env
       - envs/rabbitmq.env
       - envs/mail.env
 

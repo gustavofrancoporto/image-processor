@@ -1,10 +1,10 @@
 package com.bix.imageprocessor.domain.notification.model;
 
 public record Notification(
-        Long imageTransformationsId,
-        Long imageTransformationsStatus,
+        long imageTransformationsId,
         String imageFileName,
-        String email
+        String email,
+        boolean success
 ) {
 
 }

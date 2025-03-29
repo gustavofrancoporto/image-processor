@@ -1,29 +1,46 @@
 package com.bix.imageprocessor.domain.notification.service.impl;
 
+import com.bix.imageprocessor.domain.notification.model.Notification;
 import com.bix.imageprocessor.domain.notification.service.NotificationService;
-import com.bix.imageprocessor.persistence.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
-    private final NotificationRepository notificationRepository;
     private final JavaMailSender mailSender;
 
     @Override
-    public void notify(Long imageTransformId) {
+    public void notify(Notification notification) {
 
-        var notification = notificationRepository.findByImageTransformId(imageTransformId);
+        log.info("Sending notification for image transform {}", notification);
+
+        try {
+            var subject = notification.success() ? "Image Transformation Completed" : "Image Transformation Failed";
+            var message = getMailMessage(notification, subject);
+
+            mailSender.send(message);
+            log.info("Notification sent successfully");
+        } catch (Exception e) {
+            log.error("Error sending notification", e);
+        }
+    }
+
+    private static SimpleMailMessage getMailMessage(Notification notification, String subject) {
+        var text = notification.success() ?
+                "The transformation of the image " + notification.imageFileName() + " was completed." :
+                "The transformation of the image " + notification.imageFileName() + " failed. Please, try it again.";
 
         var message = new SimpleMailMessage();
         message.setFrom("noreply@imageprocessor.com");
         message.setTo(notification.email());
-        message.setSubject("Image Transform Completed");
-        message.setText(String.format("The transformation of the image %s was completed.", notification.imageFileName()));
-        mailSender.send(message);
+        message.setSubject(subject);
+        message.setText(text);
+        return message;
     }
 }

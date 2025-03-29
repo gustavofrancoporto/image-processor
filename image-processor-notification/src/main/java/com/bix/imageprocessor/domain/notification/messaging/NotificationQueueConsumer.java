@@ -1,5 +1,6 @@
 package com.bix.imageprocessor.domain.notification.messaging;
 
+import com.bix.imageprocessor.domain.notification.model.Notification;
 import com.bix.imageprocessor.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -14,8 +15,7 @@ public class NotificationQueueConsumer {
     private final NotificationService notificationService;
 
     @RabbitListener(queues = {NOTIFICATION_QUEUE_NAME})
-    public void receive(@Payload String imageTransformIdText) {
-        var imageTransformId = Long.valueOf(imageTransformIdText);
-        notificationService.notify(imageTransformId);
+    public void receive(@Payload Notification notification) {
+        notificationService.notify(notification);
     }
 }
