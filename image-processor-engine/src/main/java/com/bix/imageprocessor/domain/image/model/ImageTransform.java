@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public record ImageTransform(
         Long id,
         byte[] image,
+        String imageCode,
         String imageFileName,
         String requestorEmail,
         BigDecimal resizeRatio,

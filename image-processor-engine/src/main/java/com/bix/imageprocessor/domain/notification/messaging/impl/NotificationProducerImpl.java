@@ -25,7 +25,7 @@ public class NotificationProducerImpl implements NotificationProducer {
     public void notify(ImageTransform imageTransform, boolean success) {
 
         var notificationMessage = NotificationMessage.builder()
-                .imageTransformationId(imageTransform.id())
+                .imageCode(imageTransform.imageCode())
                 .imageFileName(imageTransform.imageFileName())
                 .email(imageTransform.requestorEmail())
                 .success(success)

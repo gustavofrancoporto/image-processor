@@ -29,6 +29,7 @@ public class ImageTransformRepositoryImpl implements ImageTransformRepository {
         var query = """
                 select
                     image_transformations.id,
+                    image_transformations.download_code as image_code,
                     images.data as image,
                     images.file_name as image_file_name,
                     users.email as requestor_email,

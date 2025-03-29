@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record NotificationMessage(
-        long imageTransformationId,
+        String imageCode,
         String imageFileName,
         String email,
         boolean success
