@@ -1,0 +1,4 @@
+jwt:
+  keys:
+    public: classpath:security/app.pub
+    private: classpath:security/app.key

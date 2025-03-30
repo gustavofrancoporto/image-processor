@@ -8,7 +8,7 @@ import com.bix.imageprocessor.persistence.repository.SubscriptionRepository;
 import com.bix.imageprocessor.persistence.repository.UserRepository;
 import com.bix.imageprocessor.web.dto.user.CreateUserDto;
 import com.bix.imageprocessor.web.dto.user.UserDto;
-import com.bix.imageprocessor.web.exception.NoChangeRequiredException;
+import com.bix.imageprocessor.web.exception.model.NoChangeRequiredException;
 import com.bix.imageprocessor.web.exception.model.UserAlreadyExistsException;
 import com.bix.imageprocessor.web.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,7 +27,6 @@ import static com.bix.imageprocessor.domain.subscription.model.SubscriptionType.
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;

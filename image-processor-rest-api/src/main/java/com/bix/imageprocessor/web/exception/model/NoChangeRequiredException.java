@@ -1,4 +1,4 @@
-package com.bix.imageprocessor.web.exception;
+package com.bix.imageprocessor.web.exception.model;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 
