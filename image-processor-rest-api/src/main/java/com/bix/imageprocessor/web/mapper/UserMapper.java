@@ -21,8 +21,6 @@ public interface UserMapper extends Converter<User, UserDto> {
 
     User convert(CreateUserDto createUserDto);
 
-    User convert(UserDto createUserDto);
-
     @Mapping(source = "subscription.type", target = "isPremium", qualifiedByName = "isPremium")
     @Mapping(source = "roles", target = "isAdmin", qualifiedByName = "isAdmin")
     UserDto convert(User user);

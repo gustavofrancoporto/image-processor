@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import static com.bix.imageprocessor.domain.image.model.ImageTransformStatus.PENDING;
 import static java.util.UUID.randomUUID;
