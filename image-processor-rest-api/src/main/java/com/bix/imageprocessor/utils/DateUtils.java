@@ -2,15 +2,16 @@ package com.bix.imageprocessor.utils;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class DateUtils {
 
-    public static long getSecondsUntilNextDay() {
+    public static long getSecondsUntilNextUtcDay() {
         var utcNow = ZonedDateTime.now(ZoneId.of("UTC"));
-        var utcTomorrow = utcNow.plusDays(1).truncatedTo(ChronoUnit.DAYS);
+        var utcTomorrow = utcNow.plusDays(1).truncatedTo(DAYS);
 
-        return ChronoUnit.SECONDS.between(utcNow, utcTomorrow);
+        return SECONDS.between(utcNow, utcTomorrow);
     }
-
 }

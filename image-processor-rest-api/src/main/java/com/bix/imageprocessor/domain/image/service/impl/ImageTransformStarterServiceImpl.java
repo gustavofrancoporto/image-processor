@@ -28,7 +28,7 @@ public class ImageTransformStarterServiceImpl implements ImageTransformStarterSe
     public void startProcess(ImageDto imageDto, ImageTransformParamsDto imageTransformParamsDto, User user) {
 
         if (subscriptionService.hasUserReachedLimit(user)) {
-            var retryAfter = DateUtils.getSecondsUntilNextDay();
+            var retryAfter = DateUtils.getSecondsUntilNextUtcDay();
             throw new RequestLimitReachedException(retryAfter);
         }
 
