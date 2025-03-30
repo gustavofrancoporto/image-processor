@@ -1,10 +1,14 @@
 package com.bix.imageprocessor.web.controller;
 
+import com.bix.imageprocessor.domain.subscription.model.SubscriptionType;
 import com.bix.imageprocessor.domain.user.service.UserService;
+import com.bix.imageprocessor.web.dto.user.CreateUserDto;
 import com.bix.imageprocessor.web.dto.user.UserDto;
+import com.bix.imageprocessor.web.exception.model.ApiError;
 import com.bix.imageprocessor.web.exception.model.InternalApplicationException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
+import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
@@ -37,34 +43,46 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Access denied. If current user isn't admin and it's retrieving information of another user.", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content)
     })
-    public ResponseEntity<UserDto> get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    public UserDto get(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
 
         var currentUserId = Long.valueOf(jwt.getSubject());
         var currentUser = userService.findById(currentUserId)
                 .orElseThrow(() -> new InternalApplicationException("Current user not found"));
 
-        if (!Objects.equals(id, currentUserId) && isFalse(currentUser.isAdmin())) {
+        if (Objects.equals(id, currentUserId)) {
+            return currentUser;
+        }
+        if (isFalse(currentUser.isAdmin())) {
             throw new AccessDeniedException("Access denied");
         }
 
-        var user = userService.findById(id)
+        return userService.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
-        return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/admin/users")
-    @Operation(summary = "Allows and admin user to create a new user.")
+    @PostMapping("/users")
+    @Operation(summary = "Allows the creation of a new user with basic subscription.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created successfully", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Access denied. If current user isn't admin.", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Validation errors", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
     })
-    public ResponseEntity<Void> create(@RequestBody @Validated UserDto userDto) {
+    public ResponseEntity<Void> create(@RequestBody @Validated CreateUserDto userDto) {
 
         var user = userService.create(userDto);
 
         var userUri = fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(userUri).build();
+        return created(userUri).build();
+    }
+
+    @PatchMapping("/users/{id}/subscriptionType/{subscriptionType}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @Operation(summary = "Allows an admin user to update the subscription type of the user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))),
+            @ApiResponse(responseCode = "204", description = "User already subscribed to the subscription type requested", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Validation errors", content = @Content)
+    })
+    public UserDto update(@PathVariable Long id, @PathVariable SubscriptionType subscriptionType) {
+        return userService.update(id, subscriptionType);
     }
 }

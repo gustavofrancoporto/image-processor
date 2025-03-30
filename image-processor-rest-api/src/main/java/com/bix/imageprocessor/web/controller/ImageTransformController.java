@@ -42,7 +42,7 @@ public class ImageTransformController {
             @ApiResponse(responseCode = "200", description = "Image transformation requested successfully. An e-mail is sent when the task is completed.", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized.", content = @Content)
     })
-    public void processImage(
+    public void transformImage(
             @RequestPart("parameters")
             @Validated
             ImageTransformParamsDto transformationParams,

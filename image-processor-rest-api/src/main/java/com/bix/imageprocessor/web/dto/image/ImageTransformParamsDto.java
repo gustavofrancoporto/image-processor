@@ -7,9 +7,9 @@ import org.hibernate.validator.constraints.Range;
 @ImageTransformParamsRequired
 @Schema(name = "Image Transformation Parameters", description = "At least one parameter must be specified.")
 public record ImageTransformParamsDto(
-        @Range(min = 1, max = 100)
+        @Range(min = 1, max = 200)
         @Schema(description = "If present, the image will be resized by this percentage. If not present, no resizing will be performed.",
-                example = "50", nullable = true, minimum = "1", maximum = "100")
+                example = "50", nullable = true, minimum = "1", maximum = "200")
         Integer resizePercentage,
 
         @Range(min = 1, max = 100)

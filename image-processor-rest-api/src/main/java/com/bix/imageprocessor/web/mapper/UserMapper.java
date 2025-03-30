@@ -3,6 +3,7 @@ package com.bix.imageprocessor.web.mapper;
 import com.bix.imageprocessor.domain.subscription.model.SubscriptionType;
 import com.bix.imageprocessor.domain.user.model.Role;
 import com.bix.imageprocessor.domain.user.model.User;
+import com.bix.imageprocessor.web.dto.user.CreateUserDto;
 import com.bix.imageprocessor.web.dto.user.UserDto;
 import org.apache.commons.collections4.SetUtils;
 import org.mapstruct.Mapper;
@@ -17,6 +18,8 @@ import static com.bix.imageprocessor.domain.user.model.Role.ROLE_ADMIN;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper extends Converter<User, UserDto> {
+
+    User convert(CreateUserDto createUserDto);
 
     User convert(UserDto createUserDto);
 

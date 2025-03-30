@@ -8,17 +8,20 @@ import com.bix.imageprocessor.web.exception.model.UserAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import static java.util.stream.Collectors.joining;
+import static org.apache.commons.lang3.StringUtils.firstNonBlank;
+import static org.springframework.http.HttpHeaders.RETRY_AFTER;
 import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
@@ -54,7 +57,7 @@ public class RestExceptionHandler {
                 .map(this.apiValidationErrorFactory::create)
                 .collect(joining(", "));
 
-        var message = StringUtils.firstNonBlank(globalErrorMessage, "Invalid data.");
+        var message = firstNonBlank(globalErrorMessage, "Validation error");
 
         var apiError = new ApiError(message, validationErrors);
 
@@ -75,14 +78,18 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(RequestLimitReachedException.class)
-    protected ResponseEntity<ApiError> handleAccessDenied(RequestLimitReachedException ex) {
-        var apiError = new ApiError(ex.getMessage());
-        return new ResponseEntity<>(apiError, BAD_REQUEST);
+    protected ResponseEntity<ApiError> handleRequestLimitReachedException(RequestLimitReachedException ex) {
+
+        var apiError = new ApiError("Request limit reached");
+        var headers = new HttpHeaders();
+        headers.set(RETRY_AFTER, String.valueOf(ex.getRetryAfter()));
+
+        return new ResponseEntity<>(apiError, headers, TOO_MANY_REQUESTS);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    protected ResponseEntity<ApiError> handleUserAlreadyExists(UserAlreadyExistsException ex) {
-        var apiError = new ApiError(ex.getMessage());
+    protected ResponseEntity<ApiError> handleUserAlreadyExists() {
+        var apiError = new ApiError("User already exists");
         return new ResponseEntity<>(apiError, CONFLICT);
     }
 
@@ -97,5 +104,11 @@ public class RestExceptionHandler {
         log.error("Internal server error", ex);
         var apiError = new ApiError("Internal server error");
         return new ResponseEntity<>(apiError, INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<ApiError> handleBadCredentialsException(BadCredentialsException ex) {
+        var apiError = new ApiError(ex.getMessage());
+        return new ResponseEntity<>(apiError, UNAUTHORIZED);
     }
 }

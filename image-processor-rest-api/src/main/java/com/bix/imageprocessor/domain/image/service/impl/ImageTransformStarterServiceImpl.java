@@ -3,6 +3,7 @@ package com.bix.imageprocessor.domain.image.service.impl;
 import com.bix.imageprocessor.domain.image.service.*;
 import com.bix.imageprocessor.domain.subscription.service.SubscriptionService;
 import com.bix.imageprocessor.domain.user.model.User;
+import com.bix.imageprocessor.utils.DateUtils;
 import com.bix.imageprocessor.web.dto.image.ImageDto;
 import com.bix.imageprocessor.web.dto.image.ImageTransformParamsDto;
 import com.bix.imageprocessor.web.exception.model.RequestLimitReachedException;
@@ -27,7 +28,8 @@ public class ImageTransformStarterServiceImpl implements ImageTransformStarterSe
     public void startProcess(ImageDto imageDto, ImageTransformParamsDto imageTransformParamsDto, User user) {
 
         if (subscriptionService.hasUserReachedLimit(user)) {
-            throw new RequestLimitReachedException();
+            var retryAfter = DateUtils.getSecondsUntilNextDay();
+            throw new RequestLimitReachedException(retryAfter);
         }
 
         var image = imageService.save(imageDto);

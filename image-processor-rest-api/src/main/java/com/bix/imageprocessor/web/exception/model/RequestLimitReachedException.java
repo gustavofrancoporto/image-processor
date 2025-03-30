@@ -1,8 +1,11 @@
 package com.bix.imageprocessor.web.exception.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class RequestLimitReachedException extends RuntimeException {
 
-    public RequestLimitReachedException() {
-        super("Request limit reached");
-    }
+    private final long retryAfter;
 }
