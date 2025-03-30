@@ -15,7 +15,7 @@ import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 @JsonInclude(NON_NULL)
 public class ApiError {
 
-    @JsonFormat(shape = STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime timestamp;
     private String message;
     private List<ApiValidationError> validationErrors;
