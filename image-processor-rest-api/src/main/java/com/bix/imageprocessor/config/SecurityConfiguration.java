@@ -48,7 +48,6 @@ public class SecurityConfiguration {
                         .requestMatchers(GET, "/api/*/images/*").permitAll()
                         .requestMatchers("/v3/api-docs", "/v3/api-docs/*").permitAll()
                         .requestMatchers("/swagger-ui/*").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new JwtAuthenticationConverter())))
