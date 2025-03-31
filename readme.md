@@ -19,11 +19,11 @@ The Image Processor is a web application that allows users to perform image tran
 
 ## Architecture
 
-![img.png](doc/architecture.png)
+![img.png](app/doc/architecture.png)
 
 ## Database Entities
 
-![database-diagram.png](doc/database-diagram.png)
+![database-diagram.png](app/doc/database-diagram.png)
 
 ## Getting Started
 

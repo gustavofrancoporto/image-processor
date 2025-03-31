@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
-@Schema(name = "User")
+@Schema(name = "New User")
 public record CreateUserDto(
         @NotBlank
         @Email

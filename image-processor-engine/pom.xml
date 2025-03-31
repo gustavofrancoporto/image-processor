@@ -104,8 +104,8 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>target/${build.finalName}.jar</sourceFile>
-                            <destinationFile>../docker/services/engine/${artifactId}.jar</destinationFile>
+                            <sourceFile>target/${project.build.finalName}.jar</sourceFile>
+                            <destinationFile>../docker/services/engine/${project.artifactId}.jar</destinationFile>
                         </configuration>
                     </execution>
                 </executions>

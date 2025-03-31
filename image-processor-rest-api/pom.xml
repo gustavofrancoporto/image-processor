@@ -152,8 +152,8 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>target/${build.finalName}.jar</sourceFile>
-                            <destinationFile>../docker/services/rest-api/${artifactId}.jar</destinationFile>
+                            <sourceFile>target/${project.build.finalName}.jar</sourceFile>
+                            <destinationFile>../docker/services/rest-api/${project.artifactId}.jar</destinationFile>
                         </configuration>
                     </execution>
                 </executions>
