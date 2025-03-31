@@ -3,7 +3,6 @@ package com.bix.imageprocessor.domain.user.service.impl;
 import com.bix.imageprocessor.domain.subscription.model.SubscriptionType;
 import com.bix.imageprocessor.domain.user.model.User;
 import com.bix.imageprocessor.domain.user.service.UserService;
-import com.bix.imageprocessor.persistence.repository.RoleRepository;
 import com.bix.imageprocessor.persistence.repository.SubscriptionRepository;
 import com.bix.imageprocessor.persistence.repository.UserRepository;
 import com.bix.imageprocessor.web.dto.user.CreateUserDto;
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(Long id, SubscriptionType subscriptionType) {
+    public UserDto changeSubscription(Long id, SubscriptionType subscriptionType) {
 
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));

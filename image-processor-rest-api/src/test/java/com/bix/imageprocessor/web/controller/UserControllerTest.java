@@ -207,7 +207,7 @@ class UserControllerTest {
     @Test
     void shouldReturnNoContentIfChangesDoesNotApply() throws Exception {
 
-        when(userService.update(1L, PREMIUM)).thenThrow(new NoChangeRequiredException());
+        when(userService.changeSubscription(1L, PREMIUM)).thenThrow(new NoChangeRequiredException());
 
         var jwt = jwt().authorities(new SimpleGrantedAuthority("SCOPE_ADMIN"));
 
@@ -218,7 +218,7 @@ class UserControllerTest {
     @Test
     void shouldUpdateUser() throws Exception {
 
-        when(userService.update(1L, PREMIUM)).thenReturn(simpleUserDto);
+        when(userService.changeSubscription(1L, PREMIUM)).thenReturn(simpleUserDto);
 
         var jwt = jwt().authorities(new SimpleGrantedAuthority("SCOPE_ADMIN"));
 

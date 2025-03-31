@@ -82,7 +82,7 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "User already subscribed to the subscription type requested", content = @Content),
             @ApiResponse(responseCode = "400", description = "Validation errors", content = @Content)
     })
-    public UserDto update(@PathVariable Long id, @PathVariable SubscriptionType subscriptionType) {
-        return userService.update(id, subscriptionType);
+    public UserDto changeSubscription(@PathVariable Long id, @PathVariable SubscriptionType subscriptionType) {
+        return userService.changeSubscription(id, subscriptionType);
     }
 }

@@ -16,5 +16,5 @@ public interface UserService {
 
     Optional<User> authenticate(String email, String password);
 
-    UserDto update(Long id, SubscriptionType subscriptionType);
+    UserDto changeSubscription(Long id, SubscriptionType subscriptionType);
 }
